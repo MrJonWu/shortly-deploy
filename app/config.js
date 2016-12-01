@@ -37,4 +37,49 @@ db.knex.schema.hasTable('users').then(function(exists) {
   }
 });
 
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+mongoose.connect('mongodb://localhost/shortly-deploy');
+
+var db1 = mongoose.connection;
+db1.on('error', console.error.bind(console, 'connection error'));
+db1.once('open', function() {
+  console.log.bind(console, 'we connected!');
+});
+
 module.exports = db;
+var kittySchema = new Schema({
+  name: String
+});
+var Kitten = mongoose.model('Kitten', kittySchema);
+var silence = new Kitten({ name: 'Silence' }).save();
+
+var urlSchema = new Schema({
+  url: String,
+  baseUrl: String,
+  code: String,
+  title: String, 
+  visits: Number,
+  date: { type: Date, default: Date.now }
+});
+
+
+var userSchema = new Schema({
+  username: String,
+  password: String,
+  date: { type: Date, default: Date.now }
+});
+
+var Link = mongoose.model('Link', urlSchema);
+var User = mongoose.model('User', userSchema);
+
+var Link1 = new Link({
+  url: 'www.google.com'
+}).save();
+
+
+
+
+
+
+
